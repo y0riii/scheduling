@@ -1,4 +1,5 @@
 package SchedulerSimulators;
+
 import java.util.Comparator;
 import java.util.List;
 
@@ -6,8 +7,10 @@ public class PriorityScheduler implements SchedulerSimulator {
     @Override
     public void schedule(List<Process> processes, int contextSwitchTime) {
         System.out.println("\nNon-preemptive Priority Scheduling with Context Switching");
+        if (processes.isEmpty()) return;
         processes.sort(Comparator.comparingInt(p -> p.arrivalTime));
-        int currentTime = 0;
+        int currentTime = processes.get(0).arrivalTime;
+        boolean isFirst = true;
 
         while (true) {
             Process selected = null;
@@ -28,9 +31,11 @@ public class PriorityScheduler implements SchedulerSimulator {
             }
 
             // Simulate context switching delay
-            if (currentTime > 0) {
+            if (!isFirst) {
                 System.out.println("Time " + currentTime + ": Context switching to Process " + selected.name);
                 currentTime += contextSwitchTime;
+            } else {
+                isFirst = false;
             }
 
             // Execute the selected process
@@ -38,6 +43,9 @@ public class PriorityScheduler implements SchedulerSimulator {
             currentTime += selected.burstTime;
             System.out.println("Time " + currentTime + ": Process " + selected.name + " has completed execution");
             selected.completed = true;
+
+            selected.turnaroundTime = currentTime - selected.arrivalTime;
+            selected.waitingTime = selected.turnaroundTime - selected.burstTime;
         }
     }
 }

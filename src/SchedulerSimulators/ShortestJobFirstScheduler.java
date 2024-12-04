@@ -1,13 +1,16 @@
 package SchedulerSimulators;
-import java.util.List;
-import java.util.Comparator;
 
-public class ShortestJobFirstScheduler implements SchedulerSimulator{
+import java.util.Comparator;
+import java.util.List;
+
+public class ShortestJobFirstScheduler implements SchedulerSimulator {
     @Override
     public void schedule(List<Process> processes, int contextSwitchTime) {
         System.out.println("\nNon-preemptive Shortest Job First (SJF) Scheduling with Context Switching");
+        if (processes.isEmpty()) return;
         processes.sort(Comparator.comparingInt(p -> p.arrivalTime));
-        int currentTime = 0;
+        int currentTime = processes.get(0).arrivalTime;
+        boolean isFirst = true;
 
         while (true) {
             Process selected = null;
@@ -28,9 +31,11 @@ public class ShortestJobFirstScheduler implements SchedulerSimulator{
             }
 
             // Simulate context switching delay
-            if (currentTime > 0) {
+            if (!isFirst) {
                 System.out.println("Time " + currentTime + ": Context switching to Process " + selected.name);
                 currentTime += contextSwitchTime;
+            } else {
+                isFirst = false;
             }
 
             // Execute the selected process
@@ -38,6 +43,9 @@ public class ShortestJobFirstScheduler implements SchedulerSimulator{
             currentTime += selected.burstTime;
             System.out.println("Time " + currentTime + ": Process " + selected.name + " has completed execution");
             selected.completed = true;
+
+            selected.turnaroundTime = currentTime - selected.arrivalTime;
+            selected.waitingTime = selected.turnaroundTime - selected.burstTime;
         }
     }
 }

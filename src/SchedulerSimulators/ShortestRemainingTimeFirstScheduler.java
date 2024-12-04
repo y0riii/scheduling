@@ -1,8 +1,8 @@
 package SchedulerSimulators;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
 
 
 public class ShortestRemainingTimeFirstScheduler implements SchedulerSimulator {

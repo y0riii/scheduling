@@ -1,4 +1,5 @@
 package SchedulerSimulators;
+
 import java.util.List;
 
 public interface SchedulerSimulator {

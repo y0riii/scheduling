@@ -20,6 +20,7 @@ public class Main {
         for (SchedulerSimulator scheduler : schedulers) {
             List<Process> processesCopy = deepCopy(processes);
             scheduler.schedule(processesCopy, 0);
+            scheduler.printResults(processesCopy);
         }
 
         // Testing FCAI Scheduling
