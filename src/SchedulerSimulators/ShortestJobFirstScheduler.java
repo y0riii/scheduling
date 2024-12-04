@@ -1,25 +1,32 @@
 package SchedulerSimulators;
 
-import java.util.Comparator;
+import GUI.RectanglesPainter;
+
 import java.util.List;
 
-public class ShortestJobFirstScheduler implements SchedulerSimulator {
+public class ShortestJobFirstScheduler extends SchedulerSimulator {
+
+    public ShortestJobFirstScheduler(RectanglesPainter rectanglesPainter) {
+        super(rectanglesPainter);
+    }
+
     @Override
     public void schedule(List<Process> processes, int contextSwitchTime) {
         System.out.println("\nNon-preemptive Shortest Job First (SJF) Scheduling with Context Switching");
         if (processes.isEmpty()) return;
-        processes.sort(Comparator.comparingInt(p -> p.arrivalTime));
-        int currentTime = processes.getFirst().arrivalTime;
+        int currentTime = 0;
+        int index = 0;
         boolean isFirst = true;
 
         while (true) {
             Process selected = null;
 
             // Select the shortest job available
-            for (Process p : processes) {
-                if (!p.completed && p.arrivalTime <= currentTime &&
-                        (selected == null || p.burstTime < selected.burstTime)) {
-                    selected = p;
+            for (int i = 0; i < processes.size(); i++) {
+                if (!processes.get(i).completed && processes.get(i).arrivalTime <= currentTime &&
+                        (selected == null || processes.get(i).burstTime < selected.burstTime)) {
+                    selected = processes.get(i);
+                    index = i;
                 }
             }
 
@@ -38,6 +45,7 @@ public class ShortestJobFirstScheduler implements SchedulerSimulator {
                 isFirst = false;
             }
 
+            rectanglesPainter.addRectangle(currentTime, index, selected.burstTime, selected.color);
             // Execute the selected process
             System.out.println("Time " + currentTime + ": Process " + selected.name + " with burst time " + selected.burstTime + " starts executing");
             currentTime += selected.burstTime;

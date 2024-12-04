@@ -1,11 +1,18 @@
 package SchedulerSimulators;
 
+import GUI.RectanglesPainter;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 
-public class ShortestRemainingTimeFirstScheduler implements SchedulerSimulator {
+public class ShortestRemainingTimeFirstScheduler extends SchedulerSimulator {
+
+    public ShortestRemainingTimeFirstScheduler(RectanglesPainter rectanglesPainter) {
+        super(rectanglesPainter);
+    }
+
     @Override
     public void schedule(List<Process> processes, int contextSwitchTime) {
         System.out.println("\nShortest Remaining Time First (SRTF) Scheduling with Context Switching");

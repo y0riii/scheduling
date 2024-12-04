@@ -1,12 +1,20 @@
 package SchedulerSimulators;
 
+import GUI.RectanglesPainter;
+
 import java.util.List;
 
-public interface SchedulerSimulator {
-    void schedule(List<Process> processes, int contextSwitchTime);
+public abstract class SchedulerSimulator {
+    final RectanglesPainter rectanglesPainter;
+
+    public SchedulerSimulator(RectanglesPainter rectanglesPainter) {
+        this.rectanglesPainter = rectanglesPainter;
+    }
+
+    public abstract void schedule(List<Process> processes, int contextSwitchTime);
 
     // Main results printer
-    default void printResults(List<Process> processes) {
+    public void printResults(List<Process> processes) {
         System.out.println("\n--- Scheduling Results ---");
         int totalWaitingTime = 0;
         int totalTurnaroundTime = 0;
