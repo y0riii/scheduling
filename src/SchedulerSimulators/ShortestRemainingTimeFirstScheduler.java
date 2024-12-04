@@ -9,9 +9,11 @@ public class ShortestRemainingTimeFirstScheduler implements SchedulerSimulator {
     @Override
     public void schedule(List<Process> processes, int contextSwitchTime) {
         System.out.println("\nShortest Remaining Time First (SRTF) Scheduling with Context Switching");
+        if (processes.isEmpty()) return;
         processes.sort(Comparator.comparingInt(p -> p.arrivalTime)); // Sort by arrival time
-        int currentTime = 0;
+        int currentTime = processes.getFirst().arrivalTime;
         Process runningProcess = null;
+        boolean isAlreadySelected = false;
 
         while (true) {
             // Add newly arrived processes to the ready queue
@@ -34,21 +36,25 @@ public class ShortestRemainingTimeFirstScheduler implements SchedulerSimulator {
                 continue;
             }
 
-            // Context switching handling
-            if (runningProcess != selected) {
-                if (runningProcess != null) {
-                    System.out.printf("Time %d: Context switching from Process %s to Process %s\n",
-                            currentTime, runningProcess.name, selected.name);
-                } else {
-                    System.out.printf("Time %d: Context switching to Process %s\n", currentTime, selected.name);
-                }
-                currentTime += contextSwitchTime;
+            if (runningProcess == null) {
                 runningProcess = selected;
             }
 
+            // Context switching handling
+            if (runningProcess != selected) {
+                System.out.printf("Time %d: Context switching from Process %s to Process %s\n",
+                        currentTime, runningProcess.name, selected.name);
+                currentTime += contextSwitchTime;
+                runningProcess = selected;
+                isAlreadySelected = false;
+            }
+
             // Execute the selected process for one time unit
-            System.out.printf("Time %d: Process %s with remaining time %d is executing\n",
-                    currentTime, selected.name, selected.remainingTime);
+            if (!isAlreadySelected) {
+                System.out.printf("Time %d: Process %s with remaining time %d is executing\n",
+                        currentTime, selected.name, selected.remainingTime);
+                isAlreadySelected = true;
+            }
             selected.remainingTime--;
             currentTime++;
 

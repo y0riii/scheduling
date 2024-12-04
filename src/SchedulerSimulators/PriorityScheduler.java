@@ -9,7 +9,7 @@ public class PriorityScheduler implements SchedulerSimulator {
         System.out.println("\nNon-preemptive Priority Scheduling with Context Switching");
         if (processes.isEmpty()) return;
         processes.sort(Comparator.comparingInt(p -> p.arrivalTime));
-        int currentTime = processes.get(0).arrivalTime;
+        int currentTime = processes.getFirst().arrivalTime;
         boolean isFirst = true;
 
         while (true) {
