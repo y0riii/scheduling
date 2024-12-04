@@ -1,3 +1,6 @@
+import SchedulerSimulators.Process;
+import SchedulerSimulators.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,16 +16,11 @@ public class Main {
         processes.add(new Process("P4", "Yellow", 29, 4, 10, 2));
 
         // Testing Non-Preemptive Priority Scheduling with Context Switching
-        List<Process> priorityProcesses = deepCopy(processes);
-        SchedulerSimulator.priorityScheduling(priorityProcesses, 0);
-
-        // Testing Non-Preemptive Shortest Job First (SJF) Scheduling with Context Switching
-        List<Process> sjfProcesses = deepCopy(processes);
-        SchedulerSimulator.shortestJobFirst(sjfProcesses, 0);
-
-        // Testing Shortest Remaining Time First (SRTF) Scheduling with Context Switching
-        List<Process> srtfProcesses = deepCopy(processes);
-        SchedulerSimulator.shortestRemainingTimeFirst(srtfProcesses, 0);
+        SchedulerSimulator[] schedulers = {new PriorityScheduler(), new ShortestJobFirstScheduler(), new ShortestRemainingTimeFirstScheduler()};
+        for (SchedulerSimulator scheduler : schedulers) {
+            List<Process> processesCopy = deepCopy(processes);
+            scheduler.schedule(processesCopy, 0);
+        }
 
         // Testing FCAI Scheduling
         // List<Process> fcaiProcesses = deepCopy(processes);
@@ -33,7 +31,7 @@ public class Main {
     private static List<Process> deepCopy(List<Process> original) {
         List<Process> copy = new ArrayList<>();
         for (Process p : original) {
-            copy.add(new Process(p.name, p.color, p.arrivalTime, p.burstTime, p.priority, p.quantum));
+            copy.add(new Process(p));
         }
         return copy;
     }
