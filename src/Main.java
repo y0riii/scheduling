@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -24,8 +25,8 @@ public class Main {
         SchedulerSimulator.shortestRemainingTimeFirst(srtfProcesses, 0);
 
         // Testing FCAI Scheduling
-//        List<Process> fcaiProcesses = deepCopy(processes);
-//        SchedulerSimulator.fcaiScheduling(fcaiProcesses, 0);
+        // List<Process> fcaiProcesses = deepCopy(processes);
+        // SchedulerSimulator.fcaiScheduling(fcaiProcesses, 0);
     }
 
     // Helper method to create a deep copy of the process list

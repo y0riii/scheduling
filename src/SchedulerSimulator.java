@@ -1,4 +1,6 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class SchedulerSimulator {
     // Non-preemptive Priority Scheduling with Context Switching
