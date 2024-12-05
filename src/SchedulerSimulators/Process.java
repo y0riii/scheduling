@@ -39,4 +39,8 @@ public class Process {
         this.completed = other.completed;
         this.fcaiFactor = other.fcaiFactor;
     }
+
+    public String getName() {
+        return name;
+    }
 }

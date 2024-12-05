@@ -23,4 +23,14 @@ public class RectanglesPainter extends JPanel {
         Rectangle rectangle = new Rectangle(x, y, width, color);
         rectangles.add(rectangle);
     }
+
+    public void sizeHandler(int numberOfProcesses) {
+        Rectangle rectangle = rectangles.getLast();
+        int x = rectangle.x + rectangle.width + 5;
+        int y = numberOfProcesses * 60;
+        this.setPreferredSize(new Dimension(x, y));
+        this.setBackground(Color.black);
+        Rectangle rectangle2 = rectangles.getFirst();
+        System.out.println(rectangle2.x);
+    }
 }

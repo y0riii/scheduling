@@ -1,8 +1,11 @@
+import GUI.LabelsMaker;
+import GUI.MainFrame;
 import GUI.RectanglesPainter;
 import SchedulerSimulators.Process;
 import SchedulerSimulators.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,11 +15,8 @@ public class Main {
     private static final RectanglesPainter rectanglesPainter = new RectanglesPainter();
 
     public static void main(String[] args) {
-        List<Process> processes = new ArrayList<>();
 
-        JFrame frame = new JFrame("Multiple Rectangles Example");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 200);
+        List<Process> processes = new ArrayList<>();
 
         // Adding example processes
         processes.add(new Process("P1", "#ff0000", 1, 17, 4, 4)); // name, color, arrivalTime, burstTime, priority, quantum
@@ -30,7 +30,13 @@ public class Main {
         scheduler.schedule(processesCopy, 0);
         scheduler.printResults(processesCopy);
 
-        frame.add(rectanglesPainter);  // Add the panel with rectangles
+        MainFrame frame = new MainFrame();
+        rectanglesPainter.sizeHandler(processes.size());
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        mainPanel.add(new LabelsMaker(processes));
+        mainPanel.add(rectanglesPainter);
+        frame.add(mainPanel);
         frame.setVisible(true);
     }
 

@@ -7,8 +7,8 @@ public class Rectangle {
     Color color;
 
     public Rectangle(int x, int y, int width, String color) {
-        this.x = x * 5 + 10;
-        this.y = y * 60 + 10;
+        this.x = x * 5 + 5;
+        this.y = y * 60 + 5;
         this.width = width * 5;
         this.height = 50;
         this.color = Color.decode(color);
