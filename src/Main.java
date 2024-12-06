@@ -19,6 +19,7 @@ public class Main {
 
     public static void main(String[] args) {
         final String inputFilePath = "input.txt";
+        final int contextSwitchTime = 2;
 
         List<Process> processes = new ArrayList<>();
 
@@ -39,7 +40,7 @@ public class Main {
 
         SchedulerSimulator scheduler = selectScheduler();
         List<Process> processesCopy = deepCopy(processes);
-        scheduler.schedule(processesCopy, 0);
+        scheduler.schedule(processesCopy, contextSwitchTime);
         scheduler.printResults(processesCopy);
 
         MainFrame frame = new MainFrame();
