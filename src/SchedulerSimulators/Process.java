@@ -43,4 +43,12 @@ public class Process {
     public String getName() {
         return name;
     }
+
+    public String getColor() {
+        return color;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
 }

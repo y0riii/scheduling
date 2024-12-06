@@ -1,11 +1,8 @@
-import GUI.LabelsMaker;
 import GUI.MainFrame;
 import GUI.RectanglesPainter;
 import SchedulerSimulators.Process;
 import SchedulerSimulators.*;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,6 +13,8 @@ import java.util.Scanner;
 public class Main {
 
     private static final RectanglesPainter rectanglesPainter = new RectanglesPainter();
+
+    private static final String[] statsData = new String[3];
 
     public static void main(String[] args) {
         final String inputFilePath = "input.txt";
@@ -41,16 +40,12 @@ public class Main {
         SchedulerSimulator scheduler = selectScheduler();
         List<Process> processesCopy = deepCopy(processes);
         scheduler.schedule(processesCopy, contextSwitchTime);
-        scheduler.printResults(processesCopy);
+        String[] results = scheduler.printResults(processesCopy);
+        statsData[1] = results[0];
+        statsData[2] = results[1];
 
-        MainFrame frame = new MainFrame();
-        rectanglesPainter.sizeHandler(processes.size());
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        mainPanel.add(new LabelsMaker(processes));
-        mainPanel.add(rectanglesPainter);
-        frame.add(mainPanel);
-        frame.setVisible(true);
+        MainFrame frame = new MainFrame(rectanglesPainter, processes, statsData);
+        frame.showGUI();
     }
 
     // Helper method to create a deep copy of the process list
@@ -78,12 +73,21 @@ public class Main {
 
         scanner.close();
 
-        return switch (choice) {
-            case 1 -> new PriorityScheduler(rectanglesPainter);
-            case 2 -> new ShortestJobFirstScheduler(rectanglesPainter);
-            case 3 -> new ShortestRemainingTimeFirstScheduler(rectanglesPainter);
-            default -> new FCAI_Scheduler(rectanglesPainter);
-        };
+        statsData[0] = "Scheduler name: ";
+
+        switch (choice) {
+            case 1:
+                statsData[0] += "Priority Scheduler";
+                return new PriorityScheduler(rectanglesPainter);
+            case 2:
+                statsData[0] += "Shortest Job First Scheduler";
+                return new ShortestJobFirstScheduler(rectanglesPainter);
+            case 3:
+                statsData[0] += "Shortest Remaining Time First Scheduler";
+                return new ShortestRemainingTimeFirstScheduler(rectanglesPainter);
+        }
+        statsData[0] += "FCAI Scheduler";
+        return new FCAI_Scheduler(rectanglesPainter);
     }
 
     private static Process getProcess(String line) {

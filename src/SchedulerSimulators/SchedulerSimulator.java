@@ -14,7 +14,7 @@ public abstract class SchedulerSimulator {
     public abstract void schedule(List<Process> processes, int contextSwitchTime);
 
     // Main results printer
-    public void printResults(List<Process> processes) {
+    public String[] printResults(List<Process> processes) {
         System.out.println("\n--- Scheduling Results ---");
         int totalWaitingTime = 0;
         int totalTurnaroundTime = 0;
@@ -26,7 +26,12 @@ public abstract class SchedulerSimulator {
             totalTurnaroundTime += p.turnaroundTime;
         }
 
-        System.out.printf("Average Waiting Time: %.2f\n", (double) totalWaitingTime / processes.size());
-        System.out.printf("Average Turnaround Time: %.2f\n", (double) totalTurnaroundTime / processes.size());
+        String[] results = new String[2];
+        results[0] = String.format("Average Waiting Time: %.2f", (double) totalWaitingTime / processes.size());
+        results[1] = String.format("Average Turnaround Time: %.2f\n", (double) totalTurnaroundTime / processes.size());
+
+        System.out.println(results[0]);
+        System.out.printf(results[1]);
+        return results;
     }
 }
