@@ -6,6 +6,9 @@ import SchedulerSimulators.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,14 +18,20 @@ public class Main {
     private static final RectanglesPainter rectanglesPainter = new RectanglesPainter();
 
     public static void main(String[] args) {
+        final String inputFilePath = "input.txt";
 
         List<Process> processes = new ArrayList<>();
 
-        // Adding example processes
-        processes.add(new Process("P1", "#ff0000", 0, 17, 4, 4)); // name, color, arrivalTime, burstTime, priority, quantum
-        processes.add(new Process("P2", "#0000ff", 3, 6, 9, 3));
-        processes.add(new Process("P3", "#00ff00", 4, 10, 3, 5));
-        processes.add(new Process("P4", "#ffff00", 29, 4, 8, 2));
+        try (BufferedReader br = new BufferedReader(new FileReader(inputFilePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                Process process = getProcess(line);
+                processes.add(process);
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading the input file.");
+            e.printStackTrace();
+        }
 
         // Testing Non-Preemptive Priority Scheduling with Context Switching
         SchedulerSimulator scheduler = selectScheduler();
@@ -71,5 +80,17 @@ public class Main {
             case 3 -> new ShortestRemainingTimeFirstScheduler(rectanglesPainter);
             default -> new FCAI_Scheduler(rectanglesPainter);
         };
+    }
+
+    private static Process getProcess(String line) {
+        String[] processData = line.split(" ");
+        String name = processData[0];
+        String color = processData[1];
+        int arrivalTime = Integer.parseInt(processData[2]);
+        int burstTime = Integer.parseInt(processData[3]);
+        int priority = Integer.parseInt(processData[4]);
+        int quantum = Integer.parseInt(processData[5]);
+
+        return new Process(name, color, arrivalTime, burstTime, priority, quantum);
     }
 }

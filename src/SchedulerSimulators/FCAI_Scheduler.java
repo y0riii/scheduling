@@ -10,6 +10,7 @@ public class FCAI_Scheduler extends SchedulerSimulator {
 
     private double v1;
     private double v2;
+
     public FCAI_Scheduler(RectanglesPainter rectanglesPainter) {
         super(rectanglesPainter);
     }
@@ -35,7 +36,7 @@ public class FCAI_Scheduler extends SchedulerSimulator {
         List<Process> readyProcesses = new ArrayList<>();
 
         while (true) {
-            if (currentTime == 8){
+            if (currentTime == 8) {
                 System.out.println("hello");
             }
             List<Process> extra = new ArrayList<>();
@@ -117,7 +118,7 @@ public class FCAI_Scheduler extends SchedulerSimulator {
         }
     }
 
-    private void updateFcaiFactor(Process process){
+    private void updateFcaiFactor(Process process) {
         process.fcaiFactor = (10 - process.priority) + (int) Math.ceil(process.arrivalTime / v1) + (int) Math.ceil(process.remainingTime / v2);
     }
 }
