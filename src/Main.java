@@ -32,8 +32,11 @@ public class Main {
             System.err.println("Error reading the input file.");
             e.printStackTrace();
         }
+        if (processes.isEmpty()) {
+            System.out.println("there's no processes to simulate scheduling\nExiting...");
+            return;
+        }
 
-        // Testing Non-Preemptive Priority Scheduling with Context Switching
         SchedulerSimulator scheduler = selectScheduler();
         List<Process> processesCopy = deepCopy(processes);
         scheduler.schedule(processesCopy, 0);

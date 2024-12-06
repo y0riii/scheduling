@@ -30,7 +30,5 @@ public class RectanglesPainter extends JPanel {
         int y = numberOfProcesses * 60;
         this.setPreferredSize(new Dimension(x, y));
         this.setBackground(Color.black);
-        Rectangle rectangle2 = rectangles.getFirst();
-        System.out.println(rectangle2.x);
     }
 }

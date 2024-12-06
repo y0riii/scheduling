@@ -5,6 +5,7 @@ import GUI.RectanglesPainter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 
 public class ShortestRemainingTimeFirstScheduler extends SchedulerSimulator {
@@ -16,34 +17,38 @@ public class ShortestRemainingTimeFirstScheduler extends SchedulerSimulator {
     @Override
     public void schedule(List<Process> processes, int contextSwitchTime) {
         System.out.println("\nShortest Remaining Time First (SRTF) Scheduling with Context Switching");
-        if (processes.isEmpty()) return;
+
+        List<Process> sortedProcesses = new ArrayList<>(processes);
+        sortedProcesses.sort(Comparator.comparingInt(p -> p.arrivalTime));
+
+        PriorityQueue<Process> readyProcesses = new PriorityQueue<>(Comparator.comparingInt(p -> p.remainingTime));
+
         int currentTime = 0;
         int ranFor = 0;
+        int index = 0;
         Process runningProcess = null;
 
         while (true) {
+            if (currentTime == 19) {
+                System.out.println("hello");
+            }
             // Add newly arrived processes to the ready queue
-            List<Process> readyProcesses = new ArrayList<>();
-            for (Process p : processes) {
-                if (!p.completed && p.arrivalTime <= currentTime) {
-                    readyProcesses.add(p);
-                }
+            while (index < sortedProcesses.size() && sortedProcesses.get(index).arrivalTime <= currentTime) {
+                readyProcesses.add(sortedProcesses.get(index));
+                index++;
             }
 
-            // Select the process with the shortest remaining time
-            Process selected = readyProcesses.stream()
-                    .min(Comparator.comparingInt(p -> p.remainingTime))
-                    .orElse(null);
-
             // Handle idle time if no process is ready
-            if (selected == null) {
-                if (processes.stream().allMatch(p -> p.completed)) {
+            if (readyProcesses.isEmpty()) {
+                if (index == sortedProcesses.size()) {
                     rectanglesPainter.addRectangle(currentTime - ranFor, processes.indexOf(runningProcess), ranFor, runningProcess.color);
                     break;
                 }
-                currentTime++;
+                currentTime += sortedProcesses.get(index).arrivalTime - currentTime;
                 continue;
             }
+
+            Process selected = readyProcesses.peek();
 
             if (runningProcess == null) {
                 runningProcess = selected;
@@ -64,9 +69,13 @@ public class ShortestRemainingTimeFirstScheduler extends SchedulerSimulator {
                 System.out.printf("Time %d: Process %s with remaining time %d is executing\n",
                         currentTime, selected.name, selected.remainingTime);
             }
-            selected.remainingTime--;
-            currentTime++;
-            ranFor++;
+            int extraRunningTime = selected.remainingTime;
+            if (index < sortedProcesses.size() && sortedProcesses.get(index).arrivalTime - currentTime < extraRunningTime) {
+                extraRunningTime = sortedProcesses.get(index).arrivalTime - currentTime;
+            }
+            selected.remainingTime -= extraRunningTime;
+            currentTime += extraRunningTime;
+            ranFor += extraRunningTime;
 
             // Mark process as completed if its remaining time is zero
             if (selected.remainingTime == 0) {
@@ -74,6 +83,7 @@ public class ShortestRemainingTimeFirstScheduler extends SchedulerSimulator {
                 selected.completed = true;
                 selected.turnaroundTime = currentTime - selected.arrivalTime;
                 selected.waitingTime = selected.turnaroundTime - selected.burstTime;
+                readyProcesses.poll();
             }
         }
     }
