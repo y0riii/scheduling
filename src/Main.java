@@ -19,10 +19,10 @@ public class Main {
         List<Process> processes = new ArrayList<>();
 
         // Adding example processes
-        processes.add(new Process("P1", "#ff0000", 1, 17, 4, 4)); // name, color, arrivalTime, burstTime, priority, quantum
+        processes.add(new Process("P1", "#ff0000", 0, 17, 4, 4)); // name, color, arrivalTime, burstTime, priority, quantum
         processes.add(new Process("P2", "#0000ff", 3, 6, 9, 3));
         processes.add(new Process("P3", "#00ff00", 4, 10, 3, 5));
-        processes.add(new Process("P4", "#ffff00", 29, 4, 10, 2));
+        processes.add(new Process("P4", "#ffff00", 29, 4, 8, 2));
 
         // Testing Non-Preemptive Priority Scheduling with Context Switching
         SchedulerSimulator scheduler = selectScheduler();
@@ -55,9 +55,10 @@ public class Main {
         System.out.println("1. Priority scheduler");
         System.out.println("2. Shortest job first scheduler");
         System.out.println("3. Shortest remaining time first scheduler");
+        System.out.println("4. FCAI scheduler");
         int choice = scanner.nextInt();
 
-        while (choice < 1 || choice > 3) {
+        while (choice < 1 || choice > 4) {
             System.out.println("Invalid choice, please try again.");
             choice = scanner.nextInt();
         }
@@ -67,7 +68,8 @@ public class Main {
         return switch (choice) {
             case 1 -> new PriorityScheduler(rectanglesPainter);
             case 2 -> new ShortestJobFirstScheduler(rectanglesPainter);
-            default -> new ShortestRemainingTimeFirstScheduler(rectanglesPainter);
+            case 3 -> new ShortestRemainingTimeFirstScheduler(rectanglesPainter);
+            default -> new FCAI_Scheduler(rectanglesPainter);
         };
     }
 }

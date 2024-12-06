@@ -11,7 +11,7 @@ public class Process {
     int waitingTime;
     int turnaroundTime;
     boolean completed;
-    double fcaiFactor;
+    int fcaiFactor;
 
     public Process(String name, String color, int arrivalTime, int burstTime, int priority, int quantum) {
         this.name = name;
