@@ -18,13 +18,14 @@ public class Main {
 
     public static void main(String[] args) {
         final String inputFilePath = "input.txt";
-        final int contextSwitchTime = 2;
+        final int contextSwitchTime = 0;
 
         List<Process> processes = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(inputFilePath))) {
             String line;
             while ((line = br.readLine()) != null) {
+                if (line.isEmpty() || line.charAt(0) == '#') continue;
                 Process process = getProcess(line);
                 processes.add(process);
             }

@@ -27,6 +27,9 @@ public class RectanglesPainter extends JPanel {
     public Dimension sizeHandler(int numberOfProcesses) {
         Rectangle rectangle = rectangles.getLast();
         int x = rectangle.x + rectangle.width + 5;
+        if (x < 500){
+            x = 500;
+        }
         int y = numberOfProcesses * 60;
         Dimension d = new Dimension(x, y);
         this.setPreferredSize(d);
