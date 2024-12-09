@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    private static final Scanner scanner = new Scanner(System.in);
 
     private static final RectanglesPainter rectanglesPainter = new RectanglesPainter();
 
@@ -18,7 +19,6 @@ public class Main {
 
     public static void main(String[] args) {
         final String inputFilePath = "input.txt";
-        final int contextSwitchTime = 0;
 
         List<Process> processes = new ArrayList<>();
 
@@ -39,6 +39,7 @@ public class Main {
         }
 
         SchedulerSimulator scheduler = selectScheduler();
+        int contextSwitchTime = getContextSwitchTime();
         List<Process> processesCopy = deepCopy(processes);
         scheduler.schedule(processesCopy, contextSwitchTime);
         String[] results = scheduler.printResults(processesCopy);
@@ -59,7 +60,6 @@ public class Main {
     }
 
     private static SchedulerSimulator selectScheduler() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Select scheduler: ");
         System.out.println("1. Priority scheduler");
         System.out.println("2. Shortest job first scheduler");
@@ -71,8 +71,6 @@ public class Main {
             System.out.println("Invalid choice, please try again.");
             choice = scanner.nextInt();
         }
-
-        scanner.close();
 
         statsData[0] = "Scheduler name: ";
 
@@ -89,6 +87,18 @@ public class Main {
         }
         statsData[0] += "FCAI Scheduler";
         return new FCAI_Scheduler(rectanglesPainter);
+    }
+
+    private static int getContextSwitchTime() {
+        System.out.print("Enter the context switch time: ");
+        int choice = scanner.nextInt();
+
+        while (choice < 0) {
+            System.out.println("context switch time can't be less than 0, please try again.");
+            System.out.print("Enter the context switch time: ");
+            choice = scanner.nextInt();
+        }
+        return choice;
     }
 
     private static Process getProcess(String line) {

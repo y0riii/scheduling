@@ -26,8 +26,7 @@ public class FCAI_Scheduler extends SchedulerSimulator {
         Process selected = sortedProcesses.getLast();
         v1 = (double) selected.arrivalTime / 10.0;
 
-        selected = processes.stream()
-                .max(Comparator.comparingInt(p -> p.burstTime)).get();
+        selected = processes.stream().max(Comparator.comparingInt(p -> p.burstTime)).get();
         v2 = (double) selected.burstTime / 10.0;
         int currentTime = 0;
         int ranFor = 0;
@@ -60,15 +59,12 @@ public class FCAI_Scheduler extends SchedulerSimulator {
 
             if (ranFor != 0) {
                 Process first = readyProcesses.getFirst();
-                selected = readyProcesses.stream()
-                        .min(Comparator.comparingInt(p -> p.fcaiFactor))
-                        .orElse(null);
+                selected = readyProcesses.stream().min(Comparator.comparingInt(p -> p.fcaiFactor)).orElse(null);
                 if (selected != first) {
                     rectanglesPainter.addRectangle(currentTime - ranFor, processes.indexOf(first), ranFor, first.color);
                     updateFcaiFactor(first);
                     first.quantum += first.quantum - ranFor;
-                    System.out.printf("Time %d: Context switching from Process %s to Process %s\n",
-                            currentTime, first.name, selected.name);
+                    System.out.printf("Time %d: Context switching from Process %s to Process %s\n", currentTime, first.name, selected.name);
                     currentTime += contextSwitchTime;
                     readyProcesses.removeFirst();
                     readyProcesses.remove(selected);
@@ -80,13 +76,11 @@ public class FCAI_Scheduler extends SchedulerSimulator {
 
             if (ranFor == 0) {
                 if (selected.completed) {
-                    System.out.printf("Time %d: Context switching from Process %s to Process %s\n",
-                            currentTime, selected.name, readyProcesses.getFirst().name);
+                    System.out.printf("Time %d: Context switching from Process %s to Process %s\n", currentTime, selected.name, readyProcesses.getFirst().name);
                     currentTime += contextSwitchTime;
                 }
                 selected = readyProcesses.getFirst();
-                System.out.printf("Time %d: Process %s with remaining time %d is executing\n",
-                        currentTime, selected.name, selected.remainingTime);
+                System.out.printf("Time %d: Process %s with remaining time %d is executing\n", currentTime, selected.name, selected.remainingTime);
                 ranFor = (int) Math.ceil(selected.quantum * 0.4);
                 if (ranFor > selected.remainingTime) {
                     ranFor = selected.remainingTime;
@@ -103,8 +97,7 @@ public class FCAI_Scheduler extends SchedulerSimulator {
                 readyProcesses.add(readyProcesses.getFirst());
                 readyProcesses.removeFirst();
                 rectanglesPainter.addRectangle(currentTime - ranFor, processes.indexOf(selected), ranFor, selected.color);
-                System.out.printf("Time %d: Context switching from Process %s to Process %s\n",
-                        currentTime, selected.name, readyProcesses.getFirst().name);
+                System.out.printf("Time %d: Context switching from Process %s to Process %s\n", currentTime, selected.name, readyProcesses.getFirst().name);
                 currentTime += contextSwitchTime;
                 ranFor = 0;
             }

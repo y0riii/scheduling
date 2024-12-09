@@ -57,8 +57,7 @@ public class ShortestRemainingTimeFirstScheduler extends SchedulerSimulator {
             // Context switching handling
             if (runningProcess != selected) {
                 rectanglesPainter.addRectangle(currentTime - ranFor, processes.indexOf(runningProcess), ranFor, runningProcess.color);
-                System.out.printf("Time %d: Context switching from Process %s to Process %s\n",
-                        currentTime, runningProcess.name, selected.name);
+                System.out.printf("Time %d: Context switching from Process %s to Process %s\n", currentTime, runningProcess.name, selected.name);
                 currentTime += contextSwitchTime;
                 runningProcess = selected;
                 ranFor = 0;
@@ -66,8 +65,7 @@ public class ShortestRemainingTimeFirstScheduler extends SchedulerSimulator {
 
             // Execute the selected process for one time unit
             if (ranFor == 0) {
-                System.out.printf("Time %d: Process %s with remaining time %d is executing\n",
-                        currentTime, selected.name, selected.remainingTime);
+                System.out.printf("Time %d: Process %s with remaining time %d is executing\n", currentTime, selected.name, selected.remainingTime);
             }
             int extraRunningTime = selected.remainingTime;
             if (index < sortedProcesses.size() && sortedProcesses.get(index).arrivalTime - currentTime < extraRunningTime) {

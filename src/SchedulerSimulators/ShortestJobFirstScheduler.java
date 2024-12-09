@@ -43,8 +43,7 @@ public class ShortestJobFirstScheduler extends SchedulerSimulator {
 
             // Simulate context switching delay
             if (!isFirst) {
-                System.out.printf("Time %d: Context switching from Process %s to Process %s\n",
-                        currentTime, selected.name, readyProcesses.peek().name);
+                System.out.printf("Time %d: Context switching from Process %s to Process %s\n", currentTime, selected.name, readyProcesses.peek().name);
                 currentTime += contextSwitchTime;
             } else {
                 isFirst = false;

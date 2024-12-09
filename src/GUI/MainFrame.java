@@ -12,9 +12,9 @@ import java.util.List;
 public class MainFrame extends JFrame {
 
     private final RectanglesPainter rectanglesPainter;
+    private final String[] statsData;
     List<Process> processes;
     int height = 400;
-    private final String[] statsData;
 
     public MainFrame(RectanglesPainter rectanglesPainter, List<Process> processes, String[] statsData) {
         this.rectanglesPainter = rectanglesPainter;

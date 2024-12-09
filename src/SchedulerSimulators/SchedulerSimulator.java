@@ -20,8 +20,7 @@ public abstract class SchedulerSimulator {
         int totalTurnaroundTime = 0;
 
         for (Process p : processes) {
-            System.out.printf("Process %s - Waiting Time: %d, Turnaround Time: %d\n",
-                    p.name, p.waitingTime, p.turnaroundTime);
+            System.out.printf("Process %s - Waiting Time: %d, Turnaround Time: %d\n", p.name, p.waitingTime, p.turnaroundTime);
             totalWaitingTime += p.waitingTime;
             totalTurnaroundTime += p.turnaroundTime;
         }
